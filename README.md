@@ -1,1 +1,0 @@
-# morimorig3.github.io
