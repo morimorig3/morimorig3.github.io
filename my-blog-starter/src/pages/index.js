@@ -1,64 +1,50 @@
 import * as React from "react"
 import { Link, graphql } from "gatsby"
+import { Item } from "semantic-ui-react"
+import "semantic-ui-css/semantic.min.css"
 
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
 
 const BlogIndex = ({ data, location }) => {
-  const siteTitle = data.site.siteMetadata?.title || `Title`
+  const { title, description } = data.site.siteMetadata
   const posts = data.allMarkdownRemark.nodes
 
   if (posts.length === 0) {
     return (
-      <Layout location={location} title={siteTitle}>
+      <Layout location={location} title={title} description={description}>
         <Seo title="All posts" />
         <Bio />
-        <p>
-          No blog posts found. Add markdown posts to "content/blog" (or the
-          directory you specified for the "gatsby-source-filesystem" plugin in
-          gatsby-config.js).
-        </p>
+        <p>表示する記事が存在しません。</p>
       </Layout>
     )
   }
 
   return (
-    <Layout location={location} title={siteTitle}>
+    <Layout location={location} title={title} description={description}>
       <Seo title="All posts" />
-      <Bio />
-      <ol style={{ listStyle: `none` }}>
-        {posts.map(post => {
-          const title = post.frontmatter.title || post.fields.slug
-
-          return (
-            <li key={post.fields.slug}>
-              <article
-                className="post-list-item"
-                itemScope
-                itemType="http://schema.org/Article"
-              >
-                <header>
-                  <h2>
-                    <Link to={post.fields.slug} itemProp="url">
-                      <span itemProp="headline">{title}</span>
-                    </Link>
-                  </h2>
-                  <small>{post.frontmatter.date}</small>
-                </header>
-                <section>
-                  <p
-                    dangerouslySetInnerHTML={{
-                      __html: post.frontmatter.description || post.excerpt,
-                    }}
-                    itemProp="description"
-                  />
-                </section>
-              </article>
-            </li>
-          )
-        })}
-      </ol>
+      {/* <Bio /> */}
+      <Item.Group link relaxed="very" unstackable>
+        {posts.map(post => (
+          <Item as="article" key={post.fields.slug}>
+            <Item.Image
+              size="tiny"
+              src="https://react.semantic-ui.com/images/avatar/large/stevie.jpg"
+            />
+            <Item.Content>
+              <Item.Header>
+                <Link to={post.fields.slug} itemProp="url">
+                  {post.frontmatter.title}
+                </Link>
+              </Item.Header>
+              <Item.Meta>{post.frontmatter.date}</Item.Meta>
+              <Item.Extra>カテゴリ</Item.Extra>
+              {/* <Item.Description>{paragraph}</Item.Description> */}
+            </Item.Content>
+          </Item>
+        ))}
+      </Item.Group>
     </Layout>
   )
 }
@@ -70,6 +56,7 @@ export const pageQuery = graphql`
     site {
       siteMetadata {
         title
+        description
       }
     }
     allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
@@ -79,7 +66,7 @@ export const pageQuery = graphql`
           slug
         }
         frontmatter {
-          date(formatString: "MMMM DD, YYYY")
+          date(formatString: "YYYY-MM-DD")
           title
           description
         }
