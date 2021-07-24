@@ -3,7 +3,7 @@ import { Link } from "gatsby"
 import { Container, Header, Grid, Icon } from "semantic-ui-react"
 import "semantic-ui-css/semantic.min.css"
 
-const Layout = ({ location, title, description, children }) => {
+const Layout = ({ location, title, description, social, children }) => {
   const pageTitle = {
     color: "rgba(0,0,0,.87)",
     fontSize: "20px",
@@ -33,12 +33,18 @@ const Layout = ({ location, title, description, children }) => {
             </Header>
           </Grid.Column>
           <Grid.Column floated="right" textAlign="right" width={4}>
-            <Link style={iconLink} to="/">
+            <a
+              href={`https://github.com/${social?.github || ``}`}
+              style={iconLink}
+            >
               <Icon name="github" size="large" link />
-            </Link>
-            <Link style={iconLink} to="/">
+            </a>
+            <a
+              href={`https://twitter.com/${social?.twitter || ``}`}
+              style={iconLink}
+            >
               <Icon name="twitter" size="large" link />
-            </Link>
+            </a>
           </Grid.Column>
         </Grid>
       </Container>

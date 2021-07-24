@@ -10,6 +10,8 @@ import Seo from "../components/seo"
 const BlogIndex = ({ data, location }) => {
   const { title, description } = data.site.siteMetadata
   const posts = data.allMarkdownRemark.nodes
+  const social = data.site.siteMetadata?.social
+  console.log(social)
 
   if (posts.length === 0) {
     return (
@@ -22,7 +24,12 @@ const BlogIndex = ({ data, location }) => {
   }
 
   return (
-    <Layout location={location} title={title} description={description}>
+    <Layout
+      location={location}
+      title={title}
+      description={description}
+      social={social}
+    >
       <Seo title="All posts" />
       {/* <Bio /> */}
       <Item.Group link relaxed="very" unstackable>
@@ -57,6 +64,10 @@ export const pageQuery = graphql`
       siteMetadata {
         title
         description
+        social {
+          twitter
+          github
+        }
       }
     }
     allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {

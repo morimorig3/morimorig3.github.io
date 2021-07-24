@@ -9,6 +9,7 @@ module.exports = {
     siteUrl: `https://morimorig3.github.io/`,
     social: {
       twitter: `morimorig3`,
+      github: `morimorig3`,
     },
   },
   plugins: [
